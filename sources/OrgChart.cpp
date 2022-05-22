@@ -31,11 +31,11 @@ namespace ariel
         if(son.empty()){
             throw invalid_argument("this son is empty!");
         }
+        numOfSubs++;
         if (!find_sub(this->root, father, son))
         {
             throw invalid_argument("you dont have this father");
         }
-        numOfSubs++;
         return *this;
     }
     bool OrgChart::find_sub(Node &node, string &father, string &son)
@@ -44,6 +44,7 @@ namespace ariel
         int b = node.name.compare(father);
         if (b == 0)
         {
+            ans++;
             Node temp;
             temp.name = son;
             node.sones.push_back(temp);
@@ -73,8 +74,10 @@ namespace ariel
             level++;
             Node *tmp = q[i];
             b_level_order.push_back(tmp->name);
+            int fqflo = 0;
             for (size_t j = 0; j < tmp->sones.size(); j++)
             {
+                fqflo++;
                 q.push_back(&(tmp->sones[j]));
             }
         }
@@ -91,11 +94,13 @@ namespace ariel
             Node *tmp = q[i];
             for (int j = int(tmp->sones.size() - 1); j >= 0; j--)
             {
+                rvrs++;
                 q.push_back(&(tmp->sones[(size_t)j]));
             }
         }
         for (int i = int(q.size() - 1); i >= 0; i--)
         {
+            rvrs++;
             string n = q[(size_t)i]->name;
             b_reverse_order.push_back(n);
         }
@@ -104,6 +109,7 @@ namespace ariel
     int pre = 0;
     void OrgChart::fill_q_for_preorder(Node &node)
     {
+        int fqfp = 0;
         b_preorder.push_back(node.name);
         for (size_t i = 0; i < node.sones.size(); i++)
         {
@@ -114,15 +120,18 @@ namespace ariel
     // print
     void OrgChart::fill_q_for_print_level_order(Node &node, string s, bool isLast)
     {
+        int fqfplo = 0;
         b_print_level_order.push_back(s);
         int levelOrder = 0;
         if (isLast)
         {
+            fqfplo++;
             b_print_level_order.push_back(" └─");
             s += "   ";
         }
         else
         {
+            fqfplo++;
             b_print_level_order.push_back(" ├─");
             s += " │ ";
         }
@@ -178,24 +187,26 @@ namespace ariel
         return &this->b_reverse_order[b_reverse_order.size()];
     }
     // ******************* preorder order**************
+    int bp = 0;
     string *OrgChart::begin_preorder()
     {
-        int bp = 0;
         if (root.name.empty())
         {
             throw invalid_argument("the tree is empty!");
         }
         this->b_preorder.clear();
         fill_q_for_preorder(root);
+        bp++;
         return &this->b_preorder[0];
     }
+    int ep = 0;
     string *OrgChart::end_preorder()
     {
-        int ep = 0;
         if (root.name.empty())
         {
             throw invalid_argument("the tree is empty!");
         }
+        ep++;
         return &this->b_preorder[b_preorder.size()];
     }
     // ******************* print order**************
