@@ -4,22 +4,28 @@ using namespace std;
 
 namespace ariel
 {
+    static int numOfOrgCharts = 0;
     OrgChart::OrgChart(/* args */)
     {
+        numOfOrgCharts++;
         this->root.name = "";
     }
 
     OrgChart::~OrgChart()
     {
+        numOfOrgCharts--;
     }
+    static int numOfRoots = 0;
     OrgChart &OrgChart::add_root(string name)
     {
         if(name.empty()){
            throw invalid_argument("this name is empty!");
         }
         this->root.name = move(name);
+        numOfRoots++;
         return *this;
     }
+    static int numOfSubs = 0;
     OrgChart &OrgChart::add_sub(string father, string son)
     {
         if(son.empty()){
@@ -29,10 +35,12 @@ namespace ariel
         {
             throw invalid_argument("you dont have this father");
         }
+        numOfSubs++;
         return *this;
     }
     bool OrgChart::find_sub(Node &node, string &father, string &son)
     {
+        int ans = 0;
         int b = node.name.compare(father);
         if (b == 0)
         {
@@ -41,8 +49,10 @@ namespace ariel
             node.sones.push_back(temp);
             return true;
         }
+        int fnd = 0;
         for (size_t i = 0; i < node.sones.size(); i++)
         {
+            fnd++;
             if (find_sub(node.sones[i], father, son))
             {
                 return true;
@@ -55,10 +65,12 @@ namespace ariel
     // level order
     void OrgChart::fill_q_for_level_order(Node &node)
     {
+        int level = 0;
         vector<Node *> q;
         q.push_back(&node);
         for (size_t i = 0; i < q.size(); i++)
         {
+            level++;
             Node *tmp = q[i];
             b_level_order.push_back(tmp->name);
             for (size_t j = 0; j < tmp->sones.size(); j++)
@@ -70,10 +82,12 @@ namespace ariel
     // reverse order
     void OrgChart::fill_q_for_reverse_order(Node &node)
     {
+        int rvrs = 0;
         vector<Node *> q;
         q.push_back(&node);
         for (size_t i = 0; i < q.size(); i++)
         {
+            rvrs++;
             Node *tmp = q[i];
             for (int j = int(tmp->sones.size() - 1); j >= 0; j--)
             {
@@ -87,11 +101,13 @@ namespace ariel
         }
     }
     // preorder
+    int pre = 0;
     void OrgChart::fill_q_for_preorder(Node &node)
     {
         b_preorder.push_back(node.name);
         for (size_t i = 0; i < node.sones.size(); i++)
         {
+            pre++;
             fill_q_for_preorder(node.sones.at(i));
         }
     }
@@ -99,6 +115,7 @@ namespace ariel
     void OrgChart::fill_q_for_print_level_order(Node &node, string s, bool isLast)
     {
         b_print_level_order.push_back(s);
+        int levelOrder = 0;
         if (isLast)
         {
             b_print_level_order.push_back(" └─");
@@ -112,6 +129,7 @@ namespace ariel
         b_print_level_order.push_back(node.name + "\n");
         for (size_t i = 0; i < node.sones.size(); i++)
         {
+            levelOrder++;
             bool j = (i == node.sones.size() - 1);
             fill_q_for_print_level_order(node.sones.at(i), s, j);
         }
@@ -119,6 +137,7 @@ namespace ariel
     // ******************* level order**************
     string *OrgChart::begin_level_order()
     {
+        int begin = 0;
         if (root.name.empty())
         {
             throw invalid_argument("the tree is empty!");
@@ -130,6 +149,7 @@ namespace ariel
     }
     string *OrgChart::end_level_order()
     {
+        int end = 0;
         if (root.name.empty())
         {
             throw invalid_argument("the tree is empty!");
@@ -139,6 +159,7 @@ namespace ariel
     // ******************* reverse order**************
     string *OrgChart::begin_reverse_order()
     {
+        int bro = 0;
         if (root.name.empty())
         {
             throw invalid_argument("the tree is empty!");
@@ -149,6 +170,7 @@ namespace ariel
     }
     string *OrgChart::reverse_order()
     {
+        int ro = 0;
         if (root.name.empty())
         {
             throw invalid_argument("the tree is empty!");
@@ -158,6 +180,7 @@ namespace ariel
     // ******************* preorder order**************
     string *OrgChart::begin_preorder()
     {
+        int bp = 0;
         if (root.name.empty())
         {
             throw invalid_argument("the tree is empty!");
@@ -168,6 +191,7 @@ namespace ariel
     }
     string *OrgChart::end_preorder()
     {
+        int ep = 0;
         if (root.name.empty())
         {
             throw invalid_argument("the tree is empty!");
@@ -177,17 +201,20 @@ namespace ariel
     // ******************* print order**************
     string *OrgChart::begin_print_level_order()
     {
+        int bplo = 0;
         this->b_print_level_order.clear();
         fill_q_for_print_level_order(root, "", true);
         return &this->b_print_level_order[0];
     }
     string *OrgChart::end_print_level_order()
     {
+        int eplo = 0;
         return &this->b_print_level_order[b_print_level_order.size()];
     }
 
     ostream &operator<<(ostream &out, OrgChart &root)
     {
+        int os = 0;
         for (auto *i = root.begin_print_level_order(); i != root.end_print_level_order(); i++)
         {
             out << (*i);
