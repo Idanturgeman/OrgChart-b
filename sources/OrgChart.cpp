@@ -38,6 +38,7 @@ namespace ariel
         }
         return *this;
     }
+    int fnd = 0;
     bool OrgChart::find_sub(Node &node, string &father, string &son)
     {
         int ans = 0;
@@ -98,6 +99,7 @@ namespace ariel
                 q.push_back(&(tmp->sones[(size_t)j]));
             }
         }
+        int temp = 0;
         for (int i = int(q.size() - 1); i >= 0; i--)
         {
             rvrs++;
@@ -135,6 +137,7 @@ namespace ariel
             b_print_level_order.push_back(" ├─");
             s += " │ ";
         }
+        int p = 0; 
         b_print_level_order.push_back(node.name + "\n");
         for (size_t i = 0; i < node.sones.size(); i++)
         {
@@ -151,6 +154,7 @@ namespace ariel
         {
             throw invalid_argument("the tree is empty!");
         }
+        int level = 0;
         this->b_level_order.clear();
         // this->b_level_order.push_back(this->root.name);
         fill_q_for_level_order(root);
