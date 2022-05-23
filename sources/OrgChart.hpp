@@ -20,16 +20,17 @@ namespace ariel
     
 
     public:
-        OrgChart();
-        ~OrgChart();
-        OrgChart &add_sub(string father, string son);
-        OrgChart &add_root(string name);
-        friend ostream &operator<<(ostream &out,OrgChart &root);
+        
         string* begin_preorder();
         string* end_print_level_order(); 
         string* reverse_order();
         string* begin_level_order();
+        OrgChart();
+        ~OrgChart();
+        OrgChart &add_sub(string father, string son);
+        OrgChart &add_root(string name);
         string* begin_reverse_order();
+        friend ostream &operator<<(ostream &out,OrgChart &root);
         string* end_preorder();
         string* begin_print_level_order();
         string* end_level_order();
