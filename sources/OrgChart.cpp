@@ -143,6 +143,7 @@ namespace ariel
         {
             levelOrder++;
             bool j = (i == node.sones.size() - 1);
+            int k = 0;
             fill_q_for_print_level_order(node.sones.at(i), s, j);
         }
     }
