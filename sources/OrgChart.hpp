@@ -22,17 +22,21 @@ namespace ariel
     public:
         
         string* begin_preorder();
+        OrgChart& operator=(OrgChart&&) = default;
         string* end_print_level_order(); 
         string* reverse_order();
+        OrgChart(OrgChart&& org) = default;
         string* begin_level_order();
         OrgChart();
         ~OrgChart();
         OrgChart &add_sub(string father, string son);
+        OrgChart(OrgChart& org) = default;
         OrgChart &add_root(string name);
         string* begin_reverse_order();
         friend ostream &operator<<(ostream &out,OrgChart &root);
         string* end_preorder();
         string* begin_print_level_order();
+        OrgChart& operator=(const OrgChart& org) = default;
         string* end_level_order();
         string* begin(){
             return begin_level_order();
